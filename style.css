@@ -128,7 +128,7 @@ img {
 }
 
 .main {
-  overflow: hidden; /* For animations / scrolling */
+  overflow-x: hidden; /* Prevent horizontal page overflow, allow vertical scroll */
 }
 
 /*=============== BUTTONS ===============*/
@@ -215,6 +215,8 @@ img {
     box-shadow: 0 1px 4px rgba(0,0,0,.1);
     transition: .4s;
     border-radius: 0 0 1.5rem 1.5rem;
+    max-height: 100vh;
+    overflow-y: auto;
   }
 }
 
@@ -382,12 +384,30 @@ img {
   display: flex;
   column-gap: 1.5rem;
   overflow-x: auto;
-  padding: 1rem 0 3rem;
-  scrollbar-width: none; /* Firefox */
+  padding: 1rem 0 2rem;
 }
 
-.menu__scroll::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+/* Custom Scrollbar for horizontal scrolling */
+.menu__scroll::-webkit-scrollbar,
+.gallery__container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.menu__scroll::-webkit-scrollbar-track,
+.gallery__container::-webkit-scrollbar-track {
+  background: var(--container-color);
+  border-radius: 4px;
+}
+
+.menu__scroll::-webkit-scrollbar-thumb,
+.gallery__container::-webkit-scrollbar-thumb {
+  background: var(--first-color);
+  border-radius: 4px;
+}
+
+.menu__scroll::-webkit-scrollbar-thumb:hover,
+.gallery__container::-webkit-scrollbar-thumb:hover {
+  background: var(--first-color-alt);
 }
 
 .menu__card {
@@ -431,8 +451,10 @@ img {
 }
 
 .gallery__container {
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  overflow-x: auto;
   gap: 1rem;
+  padding: 1rem 0 2rem;
 }
 
 .gallery__item {
@@ -440,7 +462,9 @@ img {
   overflow: hidden;
   border-radius: .5rem;
   cursor: pointer;
-  height: 200px;
+  min-width: 260px;
+  height: 250px;
+  flex-shrink: 0;
 }
 
 .gallery__img {
@@ -697,7 +721,15 @@ img {
 /* For medium devices */
 @media screen and (min-width: 576px) {
   .gallery__container {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
+    padding: 0;
+  }
+
+  .gallery__item {
+    min-width: unset;
+    height: 200px;
   }
 
   .contact__info {
